@@ -56,4 +56,18 @@ public class RestClient {
     List<Order> ordersReturn = response.readEntity(new GenericType<List<Order>>() {});
     return ordersReturn;
   }
+
+  // 2.
+  public Order updateOrder(Order orderObj) {
+    Client client = ClientBuilder.newClient();
+    WebTarget target = client.target(URI).path("orderReference")
+        .path(String.valueOf(orderObj.getOrderReference()));
+
+    Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON_TYPE);
+    Response response =
+        invocationBuilder.put(Entity.entity(orderObj, MediaType.APPLICATION_JSON_TYPE));
+
+    Order returnOrder = response.readEntity(Order.class);
+    return returnOrder;
+  }
 }

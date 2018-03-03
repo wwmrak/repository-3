@@ -8,7 +8,7 @@ public class RestClientTest {
     main.callTests();
   }
 
-  @SuppressWarnings({"unused"})
+  @SuppressWarnings("unused")
   void callTests() {
     // 1.a
     Order orderObj1 = new Order();
@@ -49,5 +49,21 @@ public class RestClientTest {
     } catch (Exception e) {
       e.printStackTrace();
     }
+
+    // 2.
+    Order orderObj3 = new Order();
+    orderObj3.setOrderReference("orderReference1");
+    orderObj3.setBricksQuanity(7);
+
+    try {
+      Order orderObjReturn = restClient.updateOrder(orderObj3);
+
+      if (orderObjReturn != null) {
+        String orderReference = orderObjReturn.getOrderReference();
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
   }
 }

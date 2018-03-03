@@ -1,11 +1,12 @@
+
 import java.util.List;
 
 public class RestClientTest {
   RestClient restClient = new RestClient();
 
   public static void main(String[] args) throws Exception {
-    RestClientTest main = new RestClientTest();
-    main.callTests();
+    RestClientTest restClientTestObj = new RestClientTest();
+    restClientTestObj.callTests();
   }
 
   @SuppressWarnings("unused")
@@ -76,6 +77,22 @@ public class RestClientTest {
       // 400 is returned as response status if invalid order reference is submitted
       if (orderObjReturn != null) {
         boolean isDispatched = orderObjReturn.isDispatched();
+        int responseStatus = orderObjReturn.getResponseStatus();
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    // 4.
+    Order orderObj5 = new Order();
+    orderObj5.setOrderReference("orderReference1");
+    orderObj5.setBricksQuanity(9);
+
+    try {
+      Order orderObjReturn = restClient.updateOrder(orderObj5);
+
+      // returns 400 for dispatched order
+      if (orderObjReturn != null) {
         int responseStatus = orderObjReturn.getResponseStatus();
       }
     } catch (Exception e) {

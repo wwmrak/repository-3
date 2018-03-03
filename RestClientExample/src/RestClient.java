@@ -57,7 +57,7 @@ public class RestClient {
     return ordersReturn;
   }
 
-  // stage 2.
+  // stage 2. and 4.
   public Order updateOrder(Order orderObj) {
     Client client = ClientBuilder.newClient();
     WebTarget target = client.target(URI).path("orderReference")
@@ -68,6 +68,9 @@ public class RestClient {
         invocationBuilder.put(Entity.entity(orderObj, MediaType.APPLICATION_JSON_TYPE));
 
     Order returnOrder = response.readEntity(Order.class);
+    int responseStatus = response.getStatus();
+    returnOrder.setResponseStatus(responseStatus);
+
     return returnOrder;
   }
 

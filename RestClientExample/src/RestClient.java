@@ -19,7 +19,7 @@ public class RestClient {
    * different tasks it is divided into two methods
    */
 
-  // 1.a
+  // stage 1.a
   public String submitOrderGetReference(Order orderObj) throws Exception {
     Client client = ClientBuilder.newClient();
     WebTarget webTarget = client.target(URI).path("ordersSubmit");
@@ -32,7 +32,7 @@ public class RestClient {
     return orderReference;
   }
 
-  // 1.b
+  // stage 1.b
   public Order submitOrderReferenceGetOrder(Order orderObj) throws Exception {
     Client client = ClientBuilder.newClient();
     WebTarget webTarget =
@@ -45,7 +45,7 @@ public class RestClient {
     return orderObjReturn;
   }
 
-  // 1.c
+  // stage 1.c
   public List<Order> getAllOrders() throws Exception {
     Client client = ClientBuilder.newClient();
     WebTarget webTarget = client.target(URI).path("orders").path("all");
@@ -57,7 +57,7 @@ public class RestClient {
     return ordersReturn;
   }
 
-  // 2.
+  // stage 2.
   public Order updateOrder(Order orderObj) {
     Client client = ClientBuilder.newClient();
     WebTarget target = client.target(URI).path("orderReference")
@@ -68,6 +68,23 @@ public class RestClient {
         invocationBuilder.put(Entity.entity(orderObj, MediaType.APPLICATION_JSON_TYPE));
 
     Order returnOrder = response.readEntity(Order.class);
+    return returnOrder;
+  }
+
+  // stage 3.
+  public Order fulfillOrder(Order orderObj) {
+    Client client = ClientBuilder.newClient();
+    WebTarget target =
+        client.target(URI).path("fulfillOrder").path(String.valueOf(orderObj.getOrderReference()));
+
+    Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON_TYPE);
+    Response response =
+        invocationBuilder.put(Entity.entity(orderObj, MediaType.APPLICATION_JSON_TYPE));
+
+    Order returnOrder = response.readEntity(Order.class);
+    int responseStatus = response.getStatus();
+    returnOrder.setResponseStatus(responseStatus);
+
     return returnOrder;
   }
 }

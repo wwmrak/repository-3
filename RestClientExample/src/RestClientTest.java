@@ -65,5 +65,22 @@ public class RestClientTest {
       e.printStackTrace();
     }
 
+    // 3.
+    Order orderObj4 = new Order();
+    orderObj4.setOrderReference("orderReference1");
+    orderObj4.setDispatched(true);
+
+    try {
+      Order orderObjReturn = restClient.fulfillOrder(orderObj4);
+
+      // 400 is returned as response status if invalid order reference is submitted
+      if (orderObjReturn != null) {
+        boolean isDispatched = orderObjReturn.isDispatched();
+        int responseStatus = orderObjReturn.getResponseStatus();
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
   }
 }
